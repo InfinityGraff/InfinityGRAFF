@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <!--<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>-->
+  
   <title>SVG Manipulation</title>
   <style>
     body{background-color: aquamarine;}
@@ -20,20 +20,19 @@
 
   <div id="Rsut1"></div>
   <div id="Rsut2"></div>
+  <div id="Rsut3"></div>
 </body>
 
 <script>
 
 function FetchSVG(url, callback) {
     var xhr = new XMLHttpRequest();
-    xhr.open('GET', url, true);
-    xhr.onreadystatechange = function () {
-        if (xhr.readyState === 4) {
-            if (xhr.status === 200) {
-                callback(xhr.responseText);
-            } else {
-                console.error('Erro:', xhr.statusText);
-            }
+    xhr.open('GET', url);
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            callback(xhr.responseText);
+        } else {
+            console.error('Erro:', xhr.statusText);
         }
     };
     xhr.onerror = function () {
@@ -43,7 +42,8 @@ function FetchSVG(url, callback) {
 }
 
 
-//  function FetchSVG(url,Call){$.ajax({url:url,method:'GET',dataType:'html',success:e=>{Call(e)},error:err=>{console.error('Erro:',err)}})}
+//<script src="https://code.jquery.com/jquery-3.6.4.min.js">
+//function FetchSVG(url,Call){$.ajax({url:url,method:'GET',dataType:'html',success:e=>{Call(e)},error:err=>{console.error('Erro:',err)}})}
   const VazarSVG = (svg)=>svg.replace(/"\/>\s*<path class="fil[123]" d="/g,'')
   const Tmplt_ImgSVG = (svg)=>`<img src="data:image/svg+xml,${encodeURIComponent(svg)}">`
   const RplcCor=(Svg,Cores)=>{Cores.forEach((cor,idx)=>{Svg=Svg.replace(new RegExp(`\\.fil${idx}\\s\\{fill:.*\\}`),`.fil${idx} {fill:${cor.value}}`)});return Svg}
@@ -58,12 +58,11 @@ function FetchSVG(url, callback) {
   }
 
   function ReloadCor(){
-    const SVGNOVO = 'Figs/Basara1.svg'
-    const Svgfora = 'Figs/Placas/FundoPlaca (1).svg'
     document.querySelector('#Rsut1').innerHTML = ''
     document.querySelector('#Rsut2').innerHTML = ''
-    FetchSVG(SVGNOVO,svg=>{EditarSVG(svg,'#Rsut1')})
-    FetchSVG(Svgfora,svg=>{EditarSVG(svg,'#Rsut2')})
+    FetchSVG('Desenho (1).svg',svg=>{EditarSVG(svg,'#Rsut1')})
+    FetchSVG('Desenho (2).svg',svg=>{EditarSVG(svg,'#Rsut2')})
+    FetchSVG('Desenho (3).svg',svg=>{EditarSVG(svg,'#Rsut3')})
   }ReloadCor()
 
 
@@ -102,4 +101,5 @@ function FetchSVG(url, callback) {
   
   </script>
 </html>
+
 
