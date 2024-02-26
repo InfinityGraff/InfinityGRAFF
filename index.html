@@ -260,7 +260,7 @@
 //Funções de Loads___________________________________________________________________
   function Load_Grups(keys){
     const Stge = JSON.parse(StogeGet('ConfigPage'))
-    ObjConfig.ordem = Stge.ResultOrden.split(',')
+    if(Stge){ObjConfig.ordem = Stge.ResultOrden.split(',')}
     const tem = ['GVT','TNQ']
     ObjConfig.ordem.forEach(K=>$('#All-Grup').innerHTML += `<div id="${K}-Grup" class="${tem.includes(K)?'':'Ct'} RoloTopFundo toca Rd"></div>`)}
   function Load_GrupKit(keys){
