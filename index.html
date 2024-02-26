@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>KitFigs</title> 
+  <link rel="stylesheet" href="./CSS Biblioteca.css">
+  <link rel="stylesheet" href="./index.css">
+  <style>
+    body{background: #252525}
+    #Fig-Grup{background:white}
+
+    .Div-Figs{margin: 3px; margin-bottom: 6px}
+    .Div-Figs canvas{margin: 3px}
+    .FigsInfo{background:#838383; border-radius: 255px; height: 30px;}
+    .FigsInfo img{height: 27px;}
+
+    .ts{position:relative;display:inline-block;width:60px;height:34px}
+    .tss{position:absolute;cursor:pointer;top:0;left:0;right:0;bottom:0;background:#ccc;transition:.2s;border-radius:34px}
+    .tss:before{position:absolute;content:"";height:26px;width:26px;left:4px;bottom:4px;background:white;transition:.2s;border-radius:50%}
+    input:checked + .tss{background:#2196F3}
+    input:focus + .tss{box-shadow:0 0 1px #2196F3}
+    input:checked + .tss:before{transform:translateX(26px)}
+
+    .Slctds{background: green;}
+
+    .Lote{margin:3px}
+
+    .K-Div{
+      height: 80vh;
+      width: 96vw;
+      padding: 10px 0px;
+      border-radius: 20px;
+    }
+    .K-Div.Lin{
+      height: auto;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      justify-content: flex-start;
+    }
+
+    .Opaciy{padding-right: 10px}
+    .Opaciy::-webkit-scrollbar:vertical {width: 0px;height: 0px;}
+
+    .KKK{background:#ffffff; padding:15px; margin:5px;}
+  
+    .resuteDesc{
+      background: white;
+      border: solid 1px black;
+      bottom: 0px;
+    }
+    .MiniLote.pdnns{padding: 0px 0px;background:#ffffff; opacity: 0;}
+
+    .toca{
+      margin: 15px 20px;
+    }
+
+    #All-Grup{
+      width: 100vw;
+    }
+
+    .Descric{color:black;font-size:10px;}
+    #SVGdeTeste img{height: 400px}
+
+    .Iccon{height: 25px;margin: 3px;}
+
+    .Conta{top: 28%; left: 40%; pointer-events: none;}
+
+    .ListCor{z-index: 20}
+
+    .ConfigKit{margin-top: 8px; margin-bottom: 3px;}
+
+    .FundoIndividual{background-color: rgb(54, 54, 0);}
+
+    
+
+    .Slide-W-10  { width: 40px; } .Slide-H-10  { height: 40px; }
+    .Slide-W-20  { width: 64px; } .Slide-H-20  { height: 64px; }
+    .Slide-W-30  { width: 88px; } .Slide-H-30  { height: 88px; }
+    .Slide-W-40  { width: 113px;} .Slide-H-40  { height: 113px;}
+    .Slide-W-50  { width: 137px;} .Slide-H-50  { height: 137px;}
+    .Slide-W-60  { width: 161px;} .Slide-H-60  { height: 161px;}
+    .Slide-W-70  { width: 185px;} .Slide-H-70  { height: 185px;}
+    .Slide-W-80  { width: 210px;} .Slide-H-80  { height: 210px;}
+    .Slide-W-90  { width: 234px;} .Slide-H-90  { height: 234px;}
+    .Slide-W-100 { width: 258px;} .Slide-H-100 { height: 258px;}
+    .Slide-W-110 { width: 282px;} .Slide-H-110 { height: 282px;}
+    .Slide-W-120 { width: 307px;} .Slide-H-120 { height: 307px;}
+    .Slide-W-130 { width: 331px;} .Slide-H-130 { height: 331px;}
+    .Slide-W-140 { width: 355px;} .Slide-H-140 { height: 355px;}
+    .Slide-W-150 { width: 380px;} .Slide-H-150 { height: 380px;}
+    .Slide-W-160 { width: 404px;} .Slide-H-160 { height: 404px;}
+    .Slide-W-170 { width: 428px;} .Slide-H-170 { height: 428px;}
+    .Slide-W-180 { width: 453px;} .Slide-H-180 { height: 453px;}
+    .Slide-W-190 { width: 477px;} .Slide-H-190 { height: 477px;}
+    .Slide-W-200 { width: 500px;} .Slide-H-200 { height: 500px;}
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.5/jszip.min.js"></script>
+  <script src="./PreScript.js"></script>
+  <script src="./Biblioteca.js"></script>
+  <script src="./SVGs.js"></script>
+</head>
+<body class="Ct h100 Dark">
+  <button onclick="AbreConfig()">Config</button>
+
+  <div id="All-Grup"></div>
+
+  <button onclick="Svg_To_Cvns(1.0,'vazar')">Vazar</button>
+  <button onclick="BaixarZip($$('.Slctds ~ img'),'svg')">DownloadZIP</button>
+  <div id="Fig-Grup" class="Ct"></div>
+  <div id="Fig-Rest" class="Ct"></div>
+
+  <div id="Fundo-Modal" class="Ct Dark w100 h100 none">
+    <div id="Menu-Config" class="Ct Rltv Rd">
+      <div class="Close Ct" onclick="None('#Fundo-Modal')">X</div>
+      <button onclick="ClearStorage()">Clear Stoge</button>
+      <div class="Ct"><label class="ts"><input type="checkbox" id="TrocaInptCor" onchange="TrocaInptCores()"><span class="tss"></span></label><div>Troca Inputs de Cores</div></div> <!--da pra usar isso com tbmplt_Chk()  depois olhar como-->
+      <div class="Ct"><label class="ts"><input type="checkbox" id="MudaMudaTotos" onchange="MudaMudaTotos(this)"><span class="tss"></span></label><div>MudaMuda</div></div> <!--da pra usar isso com tbmplt_Chk()  depois olhar como-->
+      
+      <div class="FundoIndividual">
+        <div id="minhaDiv" class="Ct"></div>
+        <button onclick="mostrarResultado()">Mostrar Resultado</button>
+        <button onclick="limpar()">Limpar</button>
+        <input id="ResultOrden" type="text">
+      </div>
+
+      <button onclick="StorageConfig(event)">Enviar</button>
+    </div>
+  </div>
+
+
+
+</body>
+<script>
+  const ObjFig = {
+    Drw:[219,'./Figs/Figs/Drw/Drw ().svg',50,'height',[],100],//219
+    Art:[151,'./Figs/Figs/Art/Art ().svg',50,'height',[],100],//151
+    Txt:[ 19,'./Figs/Figs/Txt/Txt ().svg',70,'height',[],19],//19
+    Frs:[232,'./Figs/Figs/Frs/Frs ().svg',99, 'width',[],90],//232
+  };const Jfig = ObjKey(ObjFig)
+  const ObjKit = {
+    'Mot':{HW:'H',svg:[],Qnt:40,Cofg:['Vazar','Orgnl'],},
+    'Gvt':{HW:'W',svg:[],Qnt:8,Cofg:['SizUp','SizDw','AltUp','AltDw'],Topic:{'Prlm_GVT':{'Qnt':46,'Lag':123,'Alt':300}}},
+    'Plc':{HW:'W',svg:[],Qnt:8,Cofg:['SizUp','SizDw']},
+    'Tnq':{HW:'W',svg:[],Qnt:4,Cofg:['SizUp','SizDw'],                Topic:{'Prlm_TNQ':{'Qnt':46,'Lag':170,'Alt':170}}},
+    'Fan':{HW:'W',svg:[],Qnt:0,Cofg:[]},
+    
+  };const Jkit = ObjKey(ObjKit) ; const Shft = Jkit.filter((_,x)=>x) ; const TopKit = Jkit.filter(e=>ObjKit[e].Topic).map(e=>ObjKit[e].Topic)
+
+  const ObjCor = {
+    '#ffee00':['Amarelo',30   ],
+    '#118f00':['Verde Bandeira',32],
+    '#00d8d8':['Azul Ciano',35],
+    '#0004ff':['Azul Royal',30],
+    '#ea00ff':['Rosa Pink',30 ],
+    '#f58bff':['Rosa Claro',35],
+    '#ff0000':['Vermelho',27  ],
+    '#ffffff':['Branco',27    ],
+    '#a1a1a1':['Cinza',30     ],
+    '#5a5a5a':['Chumbo',35    ],
+    '#000000':['Preto',27     ],
+  };const JCor = ObjKey(ObjCor)
+  const ObjConfig = {ordem:['Fan','Mot','Gvt','GVT','Plc','TNQ','Tnq']}
+
+  let CorMot = [] ; let XCorMot = 0
+  let CorFan = [] ; let XCorFan = 0
+
+  const ListFigs = {"a1":[0],"l1":[16],"a23":[17,21]}
+  const HotKey = [ "Red", "Vermelho", "Bomba", "Coelho", "Simpsom", "Bart", "Picapau", "Rick and Morty", "Rick", "Pato", "Vermelho", "Pernalonga", "Emoji", "LacasadePapel", "Fruta", "Cristo", "barbie", "reggae", "Rick e Morty", "244", "Recorte", "moto", "jesus", "Deus", "infinity", "Relijiosas"]
+
+//Biblioteca REGEX___________________________________________________________________
+  const VazarSVG=svg=>svg.replace(/"\/>\s*<path class="fil[123456789]" d="/g,'')
+  const NewBox=svg=>(svg.match(/viewBox="(.*?)"/)?.[1]?.split(' ')??[])
+  const RplcCor=(Svg,Cores)=>{Cores.forEach((cor,idx)=>{Svg=Svg.replace(new RegExp(`\\.fil${idx}\\s\\{fill:.*\\}`),`.fil${idx} {fill:${cor}}`)});return Svg}
+  const RplcX=(e,x)=>e.replace('()',`(${x+1})`)
+//Biblioteca Tmplts__________________________________________________________________
+  const Tmplt_Cor=(e,K)=>`<li class="Ct Rd ppt" style="background:${e}" onclick="mudarCor(this,'${e}','${K}')"></li>`  
+  const Tmplt_Chk=(e,on)=>`<div class="Ct"><label class="ts"><input type="checkbox" id="${e}" onchange="${on}"><span class="tss">${e}</span></label></div>`
+  const Baixar = `onclick="baixarImgSVG($('img',Pai(this)))"`
+  const Tmplt_ImgSVG=(svg,idx,K)=>`<img src="${SrcSVG(svg)}" onclick="AtualizaEU(this,'${Num(idx)+1}','${K}')">`
+  function CriaOptFigs(){
+    return `<div class="FigsInfo Ct">   <img src="./Figs/Mais.svg">    <div class="ppt">Vazar</div>
+              <img src="./Figs/Downlaod.svg" onclick="baixarImgSVG($('canvas',Avo(this)))">
+              <img src="./Figs/DownlaodSVG.svg" onclick="baixarImgSVG($('img',Avo(this)))">         </div>`}
+
+//Ações Primarias____________________________________________________________________
+  const ContLot=Val=>({Lotes:Math.floor(Val/20),Resta:Val%20})
+  const CriaIntervalo=(min,max)=>Array.from({length:(max-min)+1},(_,i)=>min+i)
+  function Slides(K){$$(`#${K}-Div img`).forEach(e=>{e.className = `Slide-${ObjKit[K].HW}-${$(`#${K}-Slid`).value}`})}
+  const Valor_Por_SVG=(svg,Pcnt)=>Num(svg.length/1000*Pcnt)
+  function Roleta(K){
+    const Lot = $$(`#${K}-Div > div`) ; const Check = $(`#${K}-Muda`).checked
+    if(Check){AddClss($(`#${K}-Div`),'Lin') ; Lot.forEach(e=>e.style.flexWrap = 'nowrap')
+        }else{RmvClss($(`#${K}-Div`),'Lin') ; Lot.forEach(e=>e.style.flexWrap = 'wrap')}
+  }
+  function ExibeDescri(span,texto){Show($('.resuteDesc',Pai(span)))}
+  function RndCrAll(K){if(K==="Mot"){XCorMot = XCorMot+1 > CorMot.length-1 ? 0 : XCorMot+1 ; $$(`#${K}-Div > div`).forEach(e=>Edit_Kit(e.id))}}
+  const urlKit=(Qnt,kit,past)=>Array.from({length:Qnt},(_,x)=>`Figs/${past}${kit}/${kit} (${x+1}).svg`)
+  function MudaMudaTotos(eu){Jkit.forEach(e=>$$(`#${e}-Muda`).forEach(E=>{if(IsChkTru(eu)){ChkFal_Clik(E)}else{ChkTru_Clik(E)}}))}
+  function RndCor(e,Lmt,K){
+    $$(e).forEach((c,idx)=>{
+      const Hex = $('#TrocaInptCor').checked ? Lmt.split(',')[Rndn(Lmt.split(',').length)] : '#'+Rndn(16777215).toString(16)
+      $$(`#${K}-Grup .Foraa`)[idx].style.background = c.value = Hex
+    })
+  }
+
+//Onload das Funções_________________________________________________________________
+  Load_Grups(Jkit) ; Load_GrupKit(Jkit) ; StogeAcc(Jfig) ; Acc_Figs(Jfig) ; LoadRoloTop() ; Edit_Fan('Fan',Randomm(1,3),Randomm(1,9)) ; CriaOrdenacao()
+  
+  Jkit.forEach(K=>$(`#${K}-Div`).addEventListener('scroll',()=>Avalia(K)))
+  document.addEventListener('keydown',e=>{if(e.key==='z'){Jkit.forEach(K=>{$(`#${K}-Div`).style.overflowY='scroll' ; HidnTru(K) }) }})
+  document.addEventListener('keyup'  ,e=>{if(e.key==='z'){Jkit.forEach(K=>{$(`#${K}-Div`).style.overflowY='hidden' ; HidnFal(K) }) }})
+  document.addEventListener('click'  ,e=>ClickFora(e.target))
+
+  function HidnTru(K){
+    const aDiv = $(`#${K}-Div`)
+    if($(`#${K}-Muda`).checked){AddClss(aDiv,'Opaciy')}else{RmvClss(aDiv,'Opaciy')}
+  }
+  function HidnFal(K){
+    const aDiv = $(`#${K}-Div`)
+    if($(`#${K}-Muda`).checked){RmvClss(aDiv,'Opaciy')}else{AddClss(aDiv,'Opaciy')}
+  }
+  
+
+//Funções Modais_____________________________________________________________________
+  const FMdal = $('#Fundo-Modal')
+  function AbreConfig(){FocoFilho(FMdal,'#Menu-Config')}
+
+//Funções de Fetchs__________________________________________________________________
+  async function Acc_Figs(k){
+    const Vazio = ObjFig.Drw[4].length===0
+    for(const K of k){
+      const NovosSVG = await Promise.all(urlKit(ObjFig[K][0],K,'Figs/').filter((e,x)=>x>=(Vazio?0:ObjFig[K][5])).map(FetchSVG))
+      ObjFig[K][4] = ObjFig[K][4].concat(NovosSVG)} ; FigOK()
+  }
+  async function Acc_Kits(k){ObjKit[k].svg=await Promise.all(urlKit(ObjKit[k].Qnt,k,'Fund/').map(FetchSVG)) ; KitOK(k)} 
+  async function Acc_Mots(k){ObjKit[k].svg= await Promise.all(urlKit(ObjKit[k].Qnt,k,'').map(FetchSVG))       ; MotOK(k)}
+  function KitOK(k){Load_Lote(k,20) ; Shft.forEach(K=>Avalia(K)) ; PreConfig('#Menu-Config')} // Removendo apenas a Primeira q é 'Mot'
+  function MotOK(k){Load_Lote(k,20) ; Avalia('Mot')}
+  function FigOK(){
+    $('#Fig-Grup').innerHTML=''
+    StogeUP(Jfig)
+    Edit_Figs(1.0)
+    Acc_Mots('Mot')
+    Shft.forEach(K=>Acc_Kits(K)) // Removendo apenas a Primeira q é 'Mot'
+    $$('.btnFigs').forEach(e=>ShowBrother(0,e))
+  }
+
+//LocalStorage_______________________________________________________________________
+  function ClearStorage(){Jfig.forEach(K=>{StogeRmv(`${K}-Stoge`)})}
+  function StogeAcc(arry){arry.forEach(K=>{ObjFig[K][4] = JSON.parse(StogeGet(`${K}-Stoge`)||"[]")})}
+  function StogeUP(arry){
+    if(StogeGet(`${arry[0]}-Stoge`)){return}
+    const [Drw,Art,Txt,Frs] = arry.map(K=>ObjFig[K][4].slice(0,ObjFig[K][5]))
+    const JJ = {'Drw':Drw,'Art':Art,'Txt':Txt,'Frs':Frs}
+    arry.forEach(K=>{console.log(JJ[K].length,`${K}:`,CalcMB(JJ[K]),"KB") ; StogeSet(`${K}-Stoge`,JSON.stringify(JJ[K]))})
+    console.log('Total:',CalcMB(Drw)+CalcMB(Art)+CalcMB(Txt)+CalcMB(Frs))
+  }
+
+//Funções de Loads___________________________________________________________________
+  function Load_Grups(keys){
+    const Stge = JSON.parse(StogeGet('ConfigPage'))
+    ObjConfig.ordem = Stge.ResultOrden.split(',')
+    const tem = ['GVT','TNQ']
+    ObjConfig.ordem.forEach(K=>$('#All-Grup').innerHTML += `<div id="${K}-Grup" class="${tem.includes(K)?'':'Ct'} RoloTopFundo toca Rd"></div>`)}
+  function Load_GrupKit(keys){
+    keys.forEach(K=>
+    $(`#${K}-Grup`).innerHTML = `<div class="ConfigKit Ct Rltv">
+        <input type="range" id="${K}-Slid" min="10" max="200" value="50" step="10" oninput="Slides('${K}')">
+        
+        <img src="Icon/Rndn.svg" class="ppt Iccon RanddonUNic" onclick="RndCor('#${K}-Cor input','${JCor}','${K}');Avalia('${K}')">
+
+        ${For(3).map(e=>`<div class="Ct none"><div class="Ct Rd ppt inptCor Foraa" onclick="Load_Cores(Pai(this),'${K}')">Cor ${e+1}</div><ul class="ListCor Rd Ct Abslt none"></ul></div>`).join('')}
+        <div id="${K}-Cor" class="Ct">${For(3).map(x=>`<input type="color" onchange="${`Avalia('${K}')`};$('#Orgnl').value=''">`).join('')}</div>
+
+          <div class="Rltv"><img src="Icon/Reld.svg" class="ppt Iccon" onclick="RndCrAll('${K}')"><div id="${K}-Cnt" class="Abslt Conta"></div></div>
+
+          ${K!=='Fan'?'':`<div class="Ct"><label class="ts"><input type="checkbox" id="InptStk" onchange="Avalia('${K}')"><span class="tss">StkFAN</span></label></div>`/*Coisa do KitFAN*/}
+          
+          ${K!=='Fan'?'':`<button onclick="Edit_Fan('Fan',Randomm(1,3),Randomm(1,9))">Randon150</button>`}
+          ${K!=='Fan'?'':`<button onclick="Edit_Fan('Fan',Randomm(1,3),Randomm(1,9))">RandonCG </button>`}
+
+          <div class="Ct">${['Vazar','Orgnl'].map(e=>!ObjKit[K].Cofg.includes(e)?'':Tmplt_Chk(e,`Avalia('${K}')`)).join('')}</div>
+
+          ${['SizUp','SizDw','AltUp','AltDw'].map(e=>!ObjKit[K].Cofg.includes(e)?'':`<img src="Icon/${e}.svg" class="ppt Iccon" onclick="Resize('${e}','${K}')">`).join('')}
+
+          <div>${!Shft.includes(K)?'':[['Size','4300','1300'],['Alts','2500']].map(e=>`<input class="none" id="${K}-${e[0]}" type="number" value="${e[K==='Plc'||K==='Tnq'?2:1]}" onchange="Avalia('${K}')" step="${K==='Plc'?'100':'300'}" min="0">`).join('')}</div>
+          
+          <div>${!Shft.includes(K)?'':`<input id="${K}-Typ" type="number" value="3" onchange="Avalia('${K}')" max="${ObjKit[K].Qnt-1}" min="0">`}</div>
+          
+        ${Tmplt_Chk(`${K}-Muda`,`Roleta('${K}')`)}
+      </div>
+      <div id="${K}-Cmbne" class="none"></div>
+      <div id="${K}-Div" class="Ct Hddn K-Div"></div>`
+  )}
+  function Resize(e,K){
+    if(e==='SizUp'){$(`#${K}-Size`).value = Num($(`#${K}-Size`).value) + 300 }
+    if(e==='SizDw'){$(`#${K}-Size`).value = Num($(`#${K}-Size`).value) - 300 }
+    if(e==='AltUp'){$(`#${K}-Alts`).value = Num($(`#${K}-Alts`).value) - 300 }
+    if(e==='AltDw'){$(`#${K}-Alts`).value = Num($(`#${K}-Alts`).value) + 300 }
+    Avalia(K)
+  }
+  function Load_Lote(kit,Lt){
+    const JJ = kit==="Mot"? ObjKit : ObjFig
+    $(`#${kit}-Div`).innerHTML = ObjKey(JJ).map(K=>{
+      const Qnt = kit==='Mot'? JJ[K].Qnt : JJ[K][0]
+     return For(Qnt).map(x=>{
+    const resto = ContLot(Qnt).Resta
+    const fim = x===Qnt-resto ? Qnt-1 : x+Lt-1 // se for o ultimo me da a fração, se não me da só o idx + 20
+
+    return `${x%Lt===0?`<div id="${kit}-${K}-${x}-${fim}" class="Lote Ct" name="nada"> <button onclick="Edit_Kit('${kit}-${K}-${x}-${fim}')">Reload</button>`:''}
+    <div class="MiniLote pdnns" name="${x}">${K}${x}</div>
+    ${x%Lt===Lt-1||x===Qnt-1?`</div>`:''}`}).join('')}).join('')
+  }
+  function Avalia(K){
+    if(K==="Fan"){Edit_Fan(K,1,1) ; return}
+    //Cria a Combinação, Baseada nos Inputs
+    $(`#${K}-Cmbne`).innerHTML = $$(`#${K}-Grup .ConfigKit input`).map((e)=>e.type==='checkbox'?e.checked:e.value).join(',')
+    //Confere se a Combinação é igual a anterior pra poder Editar ou não os Lotes
+    const Acc = $$(`#${K}-Div .Lote`).filter(e=>is_Visivel(e)&&e.getAttribute('name')!==Inn(`#${K}-Cmbne`))
+    .map(e=>{e.setAttribute('name',Inn(`#${K}-Cmbne`)) ; return e.id})
+    if(Acc.length===0){return}else{Edit_Kit(Acc[0])}
+  }
+  
+//Funções de Atualizações____________________________________________________________
+  function Edit_Figs(prcnt,vaza){
+    const J = ObjFig ; const Lote = 20 // Qnt q vai dentro do Lote
+    $('#Fig-Grup').innerHTML = ObjKey(J).map(e=>For(J[e][0]).map(x=>`
+      ${x%Lote===1?`<div class="Lote Ct">`:''}
+      <div class="Div-Figs"><img src="${SrcSVG(vaza==='vazar'?VazarSVG(J[e][4][x]):J[e][4][x])}" ${J[e][3]}="${J[e][2]*prcnt}" name="${e}${x+1}">${CriaOptFigs()}</div>  
+      ${x%Lote===0||x===J[e][0]?'</div>':''}`).join('')).join('')
+    Svg_To_Cvns('#Fig-Grup > div > div > img')
+  }
+  function Edit_Fan(K,x1,x2){ //Edita o Grup Fan
+    const Obj = K==='Fan'? [For(7)] : ''
+    CorFan = Angrm($Val(`#${K}-Cor input`))
+
+    $(`#${K}-Div`).innerHTML=''
+    Innr_(`#${K}-Div`,Obj[0].map(x=>`<div class="Cl"><div>${For(1).map(Nada=>Tmplt_ImgSVG(ObjFan(ObjFans($('#InptStk'),x,x1,x2),...CorFan[XCorFan]),XCorFan,K)).join('')}</div><button ${Baixar}>Baixar: ${'Valor_Por_SVG(x)'}</button></div>`).join(''))
+    Slides(K)
+  }
+  function Edit_Kit(div){
+    const [K,fig,min,max]=div.split('-')
+    const [Vazar,Orgnl]=[$('#Vazar').checked,$('#Orgnl').checked]
+    const Cores = UniqArry(Angrm($Val(`#${K}-Cor input`)),Vazar)
+    const JJ = K==="Mot"? ObjKit : ObjFig
+    const Loop = K==="Mot"? ['Mot'] : ObjKey(JJ)
+
+    CorMot = Cores
+
+    const UniqCor =  $('#TrocaInptCor').checked===false ?'':UniqArry($Val(`#${K}-Cor input`),false)
+    const TotalCor=  $('#TrocaInptCor').checked===false ?'':(UniqCor.map(e=>{return ObjCor[e][1]}).reduce((acc,e)=>acc+e,0))/UniqCor.length
+    const Total4  =  $('#TrocaInptCor').checked===false ?'':TotalCor + 4*(UniqCor.length-1)
+
+    const tudo = $$(`#${div} .MiniLote`).forEach(e=>{
+      const Name = e.getAttribute('name')
+      const SvgName = K==="Mot"? JJ[fig].svg[Name] : JJ[fig][4][Name]
+      let Vlr=''
+      const [,,BoxX,BoxY] = NewBox(SvgName).map(e=>Num(Cm(Num(e)/1000/100)))
+
+      e.innerHTML = `<div class="Cl Rltv KKK Rd Rotate"><div class="Ct">${For(1).map(()=>{  // antes tava >> Cores.map(cor=>{
+            const Fund = Prepara_Fundo(SvgName,CorMot[XCorMot],K)
+            const Ncor = Orgnl ? SvgName : RplcCor(SvgName,CorMot[XCorMot])
+            const vaza = Vazar ? VazarSVG(Ncor) : Ncor
+            const News = K ==='Gvt'||K==='Tnq'||K==='Plc'? Fund : vaza
+            Vlr = News
+
+          return Tmplt_ImgSVG(News,XCorMot,K)}).join('')}
+          
+          </div><button ${Baixar}>Baixar: ${RS(Valor_Por_SVG(Vlr,0.9)+BoxX*BoxY*Total4)}</button>
+          <span class="Blk" onclick="ExibeDescri(this)">...</span>
+          <span class="Descric resuteDesc none Abslt" onclick="None(this)">(${BoxX} x ${BoxY}) <br> ${UniqCor.length} Cor <br> TotalCor: ${Fxd(TotalCor)} <br> Total4: ${Fxd(Total4)} <br> Corte: ${Fxd(Valor_Por_SVG(Vlr,0.9))}</span>
+          </div>`
+
+      
+      $$(`#${div} > div > div > div`).forEach(e=>ShowBrother(0,e))
+      $(`#${K}-Cnt`).innerHTML = Cores.length
+      Cores.length<=1 ? Pai($(`#${K}-Cnt`)).style.opacity = 0.3 : Pai($(`#${K}-Cnt`)).style.opacity = 1
+      RmvClss(e,'pdnns')
+   })
+
+   Slides(K)
+  }
+  function AtualizaEU(svg,idx,K){
+    if(K==="Mot"){
+      const [Vazar,Orgnl]=[$('#Vazar').checked,$('#Orgnl').checked]
+      XCorMot = idx > CorMot.length-1 ? 0 : idx
+      SvgName = decodeURIComponent(svg.src.split(',')[1])
+      const Ncor = Orgnl ? SvgName : RplcCor(SvgName,CorMot[XCorMot])
+      const News = Vazar ? VazarSVG(Ncor) : Ncor
+      Pai(svg).innerHTML = Tmplt_ImgSVG(News,XCorMot,K)
+      Slides(K)
+    }else if(K==="Fan"){
+      XCorFan = idx > CorFan.length-1 ? 0 : idx
+      const idxdoSVG =  IdxDe(Avo(svg))
+      Pai(svg).innerHTML = Tmplt_ImgSVG(ObjFan(ObjFans($('#InptStk'),idxdoSVG,Randomm(1,3),Randomm(1,9)),...CorFan[XCorFan]),XCorFan,K)
+      Slides(K)
+    }
+  }
+  function Prepara_Fundo(svg,cor,kit){
+    if(kit==='Mot'){return ''}
+    const Gvt = ObjKit[kit].svg[$Val(`#${kit}-Typ`)]
+    
+    const Siz = $Val(`#${kit}-Size`)
+    const [,,XA,YA] = NewBox(Gvt).map(Num)
+    const [,,XB,YB] = NewBox(svg).map(Num)
+    const True = XB>Siz
+    const Scl = True ? ((XB-Siz)/XB) : -((XB-Siz)/XB)
+    const NewXB = True ? Num(Cm(XB-(XB*Scl))):Num(Cm(XB+(XB*Scl)))
+    const NewYB = True ? Num(Cm(YB-(YB*Scl))):Num(Cm(YB+(YB*Scl)))
+    const SclX = True ? 1-Scl : 1+Scl
+    const SclY = True ? 1-Scl : 1+Scl
+
+    const NewPoss_Gvt = `transform="translate(${(XA-NewXB)/2},${$Val('#Gvt-Alts')}) scale(${SclX},${SclY})"`
+    const NewPoss_Plc = `transform="translate(${(XA-NewXB)/2},${(YA-NewYB)/2     }) scale(${SclX},${SclY})"`
+
+    const Fig_Pth = (svg.match(/<g.*\/g>/s)||[])[0].replace(/<g id="Camada_x0020_1">/g,`<g ${kit==='Gvt'?NewPoss_Gvt:NewPoss_Plc}>`)
+    const Fig_css = (svg.match(/<!\[CDATA\[(.*?)\]\]>/s)||[])[1]
+
+    const xuxu = Gvt.replace(/fil0/g,'filFundo').replace(/fil1/g,'filLados').replace(/<\/g>\s*<\/g>/g,'</g>'+Fig_Pth+'</g>').replace(/red}.*?\]\]>/s,`red}${Fig_css}]]>`)
+    return xuxu.replace(/\.filFundo {fill.*/,`.filFundo {fill:${cor[1]}}`).replace(/\.filLados {fill.*/,`.filLados {fill:${cor[0]}}`)
+  }
+  function LoadRoloTop(){
+    TopKit.forEach(e=>{const [Top,Dt] = Object.entries(e)[0]
+      const Template = `
+      <div class="RoloTopFundo Ct Rd">
+      <div class="RoloTitle w100" onclick="RemoveHidden($('.RoloGrupImg',Pai(this)))">${Top}</div>
+      <div class="RolodeImg Ct w100 Rltv">
+        <span class="Abslt flip Fad h100 Ct"><div class="Seta RD WH40 Ct ppt"></div></span>
+        <span class="Abslt Flip Fad h100 Ct"><div class="Seta RD WH40 Ct ppt"></div></span>
+      <div class="RoloGrupImg Rw w100">
+      ${For(Dt.Qnt).map(e=>`<div class="DivMargim"><div class="Cl ppt">
+          <canvas id="Canv_${Top}_${e}" class="Rd ppt Cnvs Rotate"></canvas>
+          <a>Adesivo</a>
+          <div>R$ 10,00</div>
+        </div></div>`).join('')}</div></div></div>`
+      Befor(`#${Top.split('_')[1]}-Grup`,Template)
+
+      For(Dt.Qnt).map(e=>{
+        const canvas = $(`#Canv_${Top}_${e}`)
+        const imagem1 = new Image()
+        const imagem2 = new Image()
+        
+        const Toop = Top.replace('_GVT','').replace('_TNQ','') // LimpaCopias
+
+        imagem1.src = `Moldes/Molde_${Top}.png`
+        imagem2.src = `Imgs/Prlm/${Toop} (${e+1}).jpg`
+
+        imagem1.onload =()=>{
+          canvas.width = Dt.Lag; canvas.height = Dt.Alt
+          const ctx = canvas.getContext('2d')
+          ctx.drawImage(imagem2,0,0,Dt.Lag,Dt.Alt)
+          ctx.drawImage(imagem1,0,0,Dt.Lag,Dt.Alt)
+        }
+      })
+    })
+  }
+
+//Funções Cores______________________________________________________________________
+  function ClickFora(e){if(!$$('.Foraa, .ListCor, .ListCor li').includes(e)){AddClssAll('.ListCor','none') ; AddClssAll('.inptCor','Foraa') ; if(temClass(e,'inptCor'))DispClick(e)}}
+  function mudarCor(e,cor,K){const div=$('.inptCor',Avo(e)) ; div.style.background=cor
+    const idx = Num(div.innerHTML.replace('Cor ',''))-1
+    $(`#${K}-Cor`).children[idx].value = cor
+    Avalia(K)
+  }
+  function Load_Cores(div,K){
+    const ul=$('ul',div) ; TogClss(ul,'none') ; Innr(ul,'') ; JCor.forEach(e=>Innr_(ul,Tmplt_Cor(e,K)))
+    $$('.inptCor',Pai(div)).filter(e=>e!==event.target).forEach(e=>RmvClss(e,'Foraa'))
+  }
+
+//Funções Configs____________________________________________________________________
+  function TrocaInptCores(){
+    if($('#TrocaInptCor').checked){
+      $$(`.inptCor`).forEach(e=>RmvClss(Pai(e),'none'))
+      Jkit.forEach(K=>AddClss($(`#${K}-Cor`),'none'))
+    }else{
+      $$(`.inptCor`).forEach(e=>AddClss(Pai(e),'none'))
+      Jkit.forEach(K=>RmvClss($(`#${K}-Cor`),'none'))
+    }
+  }
+  function StorageConfig(event){
+    const JJ = {}
+    $$('#Menu-Config input').forEach(e=>{
+      if(e.type==='checkbox'){JJ[e.id]=e.checked}
+      else if(e.type==='radio'){if(e.checked)JJ[e.name]=e.value}
+      else{JJ[e.id]=e.value}
+    })
+    StogeSet('ConfigPage',JSON.stringify(JJ))
+  }
+  let CotCot = 0
+  function PreConfig(form){
+    CotCot+=1
+
+    if(CotCot<4){return}
+    console.log('Rolou')
+    const Stge = JSON.parse(StogeGet('ConfigPage'))
+    if(Stge){
+      ObjKey(Stge).forEach(K=>{
+        const I = $(`${form} input[name="${K}"], ${form} #${K}`)
+        if(I.type === 'checkbox'){I.checked = Stge[K]}
+        else{I.value = Stge[K]}
+
+        DispClick(I);DispClick(I)
+        $$(`.RanddonUNic`).forEach(e=>DispClick(e))
+      })
+    }
+    // Jkit.forEach(e=>{ DispClick(`#${e}-Div button`) })
+  }
+  
+  var xOrd = 1
+  var ordemIN = []
+  function CriaOrdenacao(){
+    ObjConfig.ordem.forEach((i,x)=>{
+      $('#minhaDiv').innerHTML += `<div><div class="cNT"></div><p data-index="${x}" onclick="SeletItn(this,${x})">${i}</p></div>`
+    })
+  }
+  function SeletItn(e,x){
+    if (!e.dataset.ordem){e.dataset.ordem = xOrd++ ; $('.cNT',e.parentNode).textContent = e.dataset.ordem
+      ordemIN.push(ObjConfig.ordem[x])}
+  }
+  function limpar(){xOrd=1 ; ordemIN=[] ; $$('p',$('#minhaDiv')).forEach(e=>{e.dataset.ordem=''; $('.cNT',Pai(e)).textContent=''})}
+  function mostrarResultado(){$('#ResultOrden').value = ordemIN}
+
+  //________________________________________________________________________________________________________________________
+  //________________________________________________________________________________________________________________________
+    // Login do Usuário Mudará tudo no App (Basea no Storage das Config) com Ordenador dos Kits
+    // Criar um Login Administrador (tem todas as Opções Disponiveis)
+
+
+</script>
