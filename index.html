@@ -268,12 +268,12 @@
     $(`#${K}-Grup`).innerHTML = `<div class="ConfigKit Ct Rltv">
         <input type="range" id="${K}-Slid" min="10" max="200" value="50" step="10" oninput="Slides('${K}')">
         
-        <img src="Icon/Rndn.svg" class="ppt Iccon RanddonUNic" onclick="RndCor('#${K}-Cor input','${JCor}','${K}');Avalia('${K}')">
+        <img src=".Icon/Rndn.svg" class="ppt Iccon RanddonUNic" onclick="RndCor('#${K}-Cor input','${JCor}','${K}');Avalia('${K}')">
 
         ${For(3).map(e=>`<div class="Ct none"><div class="Ct Rd ppt inptCor Foraa" onclick="Load_Cores(Pai(this),'${K}')">Cor ${e+1}</div><ul class="ListCor Rd Ct Abslt none"></ul></div>`).join('')}
         <div id="${K}-Cor" class="Ct">${For(3).map(x=>`<input type="color" onchange="${`Avalia('${K}')`};$('#Orgnl').value=''">`).join('')}</div>
 
-          <div class="Rltv"><img src="Icon/Reld.svg" class="ppt Iccon" onclick="RndCrAll('${K}')"><div id="${K}-Cnt" class="Abslt Conta"></div></div>
+          <div class="Rltv"><img src=".Icon/Reld.svg" class="ppt Iccon" onclick="RndCrAll('${K}')"><div id="${K}-Cnt" class="Abslt Conta"></div></div>
 
           ${K!=='Fan'?'':`<div class="Ct"><label class="ts"><input type="checkbox" id="InptStk" onchange="Avalia('${K}')"><span class="tss">StkFAN</span></label></div>`/*Coisa do KitFAN*/}
           
@@ -282,7 +282,7 @@
 
           <div class="Ct">${['Vazar','Orgnl'].map(e=>!ObjKit[K].Cofg.includes(e)?'':Tmplt_Chk(e,`Avalia('${K}')`)).join('')}</div>
 
-          ${['SizUp','SizDw','AltUp','AltDw'].map(e=>!ObjKit[K].Cofg.includes(e)?'':`<img src="Icon/${e}.svg" class="ppt Iccon" onclick="Resize('${e}','${K}')">`).join('')}
+          ${['SizUp','SizDw','AltUp','AltDw'].map(e=>!ObjKit[K].Cofg.includes(e)?'':`<img src=".Icon/${e}.svg" class="ppt Iccon" onclick="Resize('${e}','${K}')">`).join('')}
 
           <div>${!Shft.includes(K)?'':[['Size','4300','1300'],['Alts','2500']].map(e=>`<input class="none" id="${K}-${e[0]}" type="number" value="${e[K==='Plc'||K==='Tnq'?2:1]}" onchange="Avalia('${K}')" step="${K==='Plc'?'100':'300'}" min="0">`).join('')}</div>
           
